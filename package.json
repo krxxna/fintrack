@@ -1,0 +1,19 @@
+{
+  "name": "fintrack",
+  "version": "1.0.0",
+  "description": "FinTrack – Full-Stack Personal Finance Tracker",
+  "private": true,
+  "scripts": {
+    "dev":            "concurrently -n \"API,APP\" -c \"cyan,magenta\" \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend":    "cd backend  && npm run dev",
+    "dev:frontend":   "cd frontend && npm start",
+    "install:all":    "npm run install:backend && npm run install:frontend",
+    "install:backend":  "cd backend  && npm install",
+    "install:frontend": "cd frontend && npm install",
+    "seed":           "cd backend && npm run seed",
+    "build":          "cd frontend && npm run build"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
