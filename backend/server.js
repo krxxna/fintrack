@@ -109,4 +109,3 @@ process.on('SIGTERM', () => {
 });
 
 module.exports = app;
-git config --global user.email "yourgmail@gmail.com"
