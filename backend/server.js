@@ -63,6 +63,15 @@ app.use('/api/auth',         authRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/analytics',    analyticsRoutes);
 
+// ── Root route
+app.get('/', (req, res) => {
+  res.json({
+    success: true,
+    message: 'FinTrack API is running 🚀',
+    docs:    '/api/health',
+  });
+});
+
 // ── Health check
 app.get('/api/health', (req, res) => {
   res.json({
@@ -100,3 +109,4 @@ process.on('SIGTERM', () => {
 });
 
 module.exports = app;
+git config --global user.email "yourgmail@gmail.com"
