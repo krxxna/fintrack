@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Plus, Search, X, Receipt } from 'lucide-react';
 import { useData }               from '../contexts/DataContext';
+import { useCurrency }           from '../hooks/useCurrency';
 import { useToast }              from '../contexts/ToastContext';
 import { TxnRow }                from '../components/TxnRow';
 import { TransactionModal }      from '../components/TransactionModal';
@@ -11,6 +12,7 @@ import { CATEGORIES, MONTHS }    from '../constants/categories';
 export function Transactions() {
   const { transactions, addTransaction, editTransaction, deleteTransaction, getSummary } = useData();
   const toast = useToast();
+  const currency = useCurrency();
 
   const [showModal,  setShowModal]  = useState(false);
   const [editTxn,    setEditTxn]    = useState(null);
@@ -83,9 +85,9 @@ export function Transactions() {
       {/* ── Summary Mini Cards */}
       <div className="three-col" style={{ marginBottom: 20 }}>
         {[
-          { label: 'Total Income',   value: fmt(summary.income),                          color: 'var(--green)' },
-          { label: 'Total Expenses', value: fmt(summary.expense),                         color: 'var(--red)' },
-          { label: 'Net Balance',    value: fmt(summary.balance), color: summary.balance >= 0 ? 'var(--teal)' : 'var(--red)' },
+          { label: 'Total Income',   value: fmt(summary.income, currency),                color: 'var(--green)' },
+          { label: 'Total Expenses', value: fmt(summary.expense, currency),               color: 'var(--red)' },
+          { label: 'Net Balance',    value: fmt(summary.balance, currency), color: summary.balance >= 0 ? 'var(--teal)' : 'var(--red)' },
         ].map((s, i) => (
           <div key={i} className="card" style={{ padding: '16px 20px' }}>
             <div className="stat-label">{s.label}</div>
@@ -177,6 +179,7 @@ export function Transactions() {
                 txn={t}
                 onEdit={openEdit}
                 onDelete={handleDelete}
+                currency={currency}
               />
             ))}
           </div>

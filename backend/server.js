@@ -27,6 +27,7 @@ app.use(
     origin: function (origin, callback) {
       const allowedOrigins = [
         'http://localhost:3000',
+        'http://localhost:3001',
         'https://fintrack-nu-kohl.vercel.app',
         process.env.CLIENT_URL
       ].filter(Boolean);
@@ -53,7 +54,7 @@ const limiter = rateLimit({
 });
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max:      10,
+  max:      50,
   message: { success: false, message: 'Too many auth attempts, please try again later.' },
 });
 

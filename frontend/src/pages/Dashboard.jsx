@@ -7,6 +7,7 @@ import {
   Wallet, ArrowUpRight, ArrowDownRight, TrendingUp, ChevronRight,
 } from 'lucide-react';
 import { useData }          from '../contexts/DataContext';
+import { useCurrency }      from '../hooks/useCurrency';
 import { StatCard }         from '../components/StatCard';
 import { TxnRow }           from '../components/TxnRow';
 import { ChartTooltip }     from '../components/ui/ChartTooltip';
@@ -16,6 +17,7 @@ import { getCategoryMeta }  from '../constants/categories';
 
 export function Dashboard({ setPage }) {
   const { transactions, getSummary, getMonthlyData, getCategoryData } = useData();
+  const currency = useCurrency();
 
   const now      = new Date();
   const allTxns  = transactions;
@@ -42,7 +44,7 @@ export function Dashboard({ setPage }) {
   const stats = [
     {
       label:    'Total Balance',
-      value:    fmt(current.income - current.expense),
+      value:    fmt(current.income - current.expense, currency),
       icon:     Wallet,
       iconColor:'var(--teal)',
       iconBg:   'var(--teal-glow)',
@@ -50,7 +52,7 @@ export function Dashboard({ setPage }) {
     },
     {
       label:    'Monthly Income',
-      value:    fmt(current.income),
+      value:    fmt(current.income, currency),
       icon:     ArrowUpRight,
       iconColor:'var(--green)',
       iconBg:   'var(--green-glow)',
@@ -58,7 +60,7 @@ export function Dashboard({ setPage }) {
     },
     {
       label:    'Monthly Expense',
-      value:    fmt(current.expense),
+      value:    fmt(current.expense, currency),
       icon:     ArrowDownRight,
       iconColor:'var(--red)',
       iconBg:   'var(--red-glow)',
@@ -111,7 +113,7 @@ export function Dashboard({ setPage }) {
               <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
               <XAxis dataKey="month" tick={{ fontSize: 11, fill: 'var(--text3)' }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fontSize: 11, fill: 'var(--text3)' }} axisLine={false} tickLine={false}
-                tickFormatter={v => v >= 1000 ? `$${v / 1000}k` : `$${v}`} />
+                tickFormatter={v => currency === 'USD' ? (v >= 1000 ? `$${v / 1000}k` : `$${v}`) : v >= 1000 ? `${v / 1000}k` : v} />
               <Tooltip content={<ChartTooltip />} />
               <Area type="monotone" dataKey="income"  name="Income"  stroke="#0EA5E9" strokeWidth={2} fill="url(#gi)" dot={false} activeDot={{ r: 4 }} />
               <Area type="monotone" dataKey="expense" name="Expense" stroke="#EF4444" strokeWidth={2} fill="url(#ge)" dot={false} activeDot={{ r: 4 }} />
@@ -152,7 +154,7 @@ export function Dashboard({ setPage }) {
                       <div className="pie-dot" style={{ background: getCategoryMeta(d.name).color }} />
                       <span>{d.name}</span>
                     </div>
-                    <div className="pie-legend-val">{fmt(d.value)}</div>
+                    <div className="pie-legend-val">{fmt(d.value, currency)}</div>
                   </div>
                 ))}
               </div>
@@ -176,7 +178,7 @@ export function Dashboard({ setPage }) {
         </div>
         {recent.length > 0 ? (
           <div className="txn-list">
-            {recent.map(t => <TxnRow key={t._id} txn={t} compact />)}
+            {recent.map(t => <TxnRow key={t._id} txn={t} compact currency={currency} />)}
           </div>
         ) : (
           <EmptyState title="No transactions yet" subtitle="Add your first income or expense to get started" />

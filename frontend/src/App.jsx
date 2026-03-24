@@ -5,19 +5,21 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { DataProvider }   from './contexts/DataContext';
 import { Sidebar }        from './components/layout/Sidebar';
 import { Topbar }         from './components/layout/Topbar';
+import Landing       from './pages/Landing';
 import { AuthPage }       from './pages/AuthPage';
 import { Dashboard }      from './pages/Dashboard';
 import { Transactions }   from './pages/Transactions';
 import { Analytics }      from './pages/Analytics';
 import { Settings }       from './pages/Settings';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 // ── Inner app (uses auth context)
 function AppInner() {
   const { user } = useAuth();
   const [page, setPage]  = useState('dashboard');
 
-  if (!user) return <AuthPage />;
-
+  if (!user) return <Navigate to="/auth" replace />;
+  
   const pages = {
     dashboard:    <Dashboard    setPage={setPage} />,
     transactions: <Transactions />,
@@ -38,6 +40,25 @@ function AppInner() {
   );
 }
 
+// ── Auth route guard — redirect to dashboard if already logged in
+function AuthRoute() {
+  const { user } = useAuth();
+  if (user) return <Navigate to="/dashboard" replace />;
+  return <AuthPage />;
+}
+
+function AppRoutes() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/auth" element={<AuthRoute />} />
+        <Route path="/dashboard/*" element={<AppInner />} />
+      </Routes>
+    </Router>
+  );
+}
+
 // ── Root with all providers
 export default function App() {
   return (
@@ -45,7 +66,7 @@ export default function App() {
       <ToastProvider>
         <AuthProvider>
           <DataProvider>
-            <AppInner />
+            <AppRoutes />
           </DataProvider>
         </AuthProvider>
       </ToastProvider>

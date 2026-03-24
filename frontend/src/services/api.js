@@ -14,11 +14,13 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// ── Handle 401 globally
+// ── Handle 401 globally (skip auth routes so login errors show on the auth page)
 api.interceptors.response.use(
   (res) => res,
   (err) => {
-    if (err.response?.status === 401) {
+    const url = err.config?.url || '';
+    const isAuthRoute = url.includes('/auth/login') || url.includes('/auth/signup');
+    if (err.response?.status === 401 && !isAuthRoute) {
       localStorage.removeItem('ft_token');
       localStorage.removeItem('ft_user');
       window.location.href = '/';

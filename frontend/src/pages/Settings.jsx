@@ -3,7 +3,9 @@ import { Shield, Download, Key, Bell, Moon, Globe, Trash2, RefreshCw } from 'luc
 import { useAuth }  from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { useToast } from '../contexts/ToastContext';
+import { useCurrency, fmt } from '../hooks/useCurrency';
 import { useData }  from '../contexts/DataContext';
+import { fmt as formatCurrency } from '../utils/formatters';
 
 function ToggleRow({ label, desc, checked, onChange }) {
   return (
@@ -25,6 +27,7 @@ export function Settings() {
   const { theme, toggle, isDark }               = useTheme();
   const toast  = useToast();
   const { transactions } = useData();
+  const currentCurrency = useCurrency();
 
   const [name,     setName]     = useState(user?.name  || '');
   const [currency, setCurrency] = useState(user?.currency || 'USD');
@@ -121,6 +124,13 @@ export function Settings() {
               <option value="CAD">$ CAD – Canadian Dollar</option>
               <option value="AUD">$ AUD – Australian Dollar</option>
             </select>
+            <div style={{ fontSize: 12, color: 'var(--text3)', marginTop: 4 }}>
+              Current: {Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: currentCurrency,
+                maximumFractionDigits: 0
+              }).format(1234.56)}
+            </div>
           </div>
         </div>
 

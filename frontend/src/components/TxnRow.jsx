@@ -3,7 +3,7 @@ import { Edit3, Trash2 } from 'lucide-react';
 import { getCategoryMeta } from '../constants/categories';
 import { fmt, fmtDate } from '../utils/formatters';
 
-export function TxnRow({ txn, compact = false, onEdit, onDelete }) {
+export function TxnRow({ txn, compact = false, onEdit, onDelete, currency = 'USD' }) {
   const meta = getCategoryMeta(txn.category);
   const Icon = meta.icon;
 
@@ -30,7 +30,7 @@ export function TxnRow({ txn, compact = false, onEdit, onDelete }) {
         className="txn-amount"
         style={{ color: txn.type === 'income' ? 'var(--green)' : 'var(--red)' }}
       >
-        {txn.type === 'income' ? '+' : '-'}{fmt(txn.amount)}
+        {txn.type === 'income' ? '+' : '-'}{fmt(txn.amount, currency)}
       </div>
 
       {/* Actions (hidden until hover) */}

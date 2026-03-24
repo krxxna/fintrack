@@ -60,7 +60,7 @@ export function AuthProvider({ children }) {
   const demoLogin = useCallback(async () => {
     setLoading(true);
     await new Promise(r => setTimeout(r, 700));
-    const demoUser = { id: 'demo', name: 'Alex Morgan', email: 'alex@fintrack.app', currency: 'USD' };
+    const demoUser = { id: 'demo', name: 'Alex Morgan', email: 'alex@fintrack.app', currency: 'INR' };
     localStorage.setItem('ft_token', 'demo-token');
     localStorage.setItem('ft_user',  JSON.stringify(demoUser));
     setUser(demoUser);
