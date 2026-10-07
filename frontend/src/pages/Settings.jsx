@@ -90,7 +90,7 @@ export function Settings() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 22 }}>
           <div
             className="avatar avatar-lg"
-            style={{ background: 'linear-gradient(135deg,#0EA5E9,#8B5CF6)' }}
+            style={{ background: 'var(--bg3)', border: '1px solid var(--border2)' }}
           >
             {initials}
           </div>

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt   = require('bcryptjs');
+const { isMongoReady, memoryUser } = require('./memoryStore');
 
 const userSchema = new mongoose.Schema(
   {
@@ -69,4 +70,15 @@ userSchema.methods.toPublic = function () {
   };
 };
 
-module.exports = mongoose.model('User', userSchema);
+const User = mongoose.model('User', userSchema);
+
+module.exports = new Proxy(User, {
+  get(target, prop) {
+    if (!isMongoReady() && prop in memoryUser) {
+      const value = memoryUser[prop];
+      return typeof value === 'function' ? value.bind(memoryUser) : value;
+    }
+    const value = target[prop];
+    return typeof value === 'function' ? value.bind(target) : value;
+  },
+});

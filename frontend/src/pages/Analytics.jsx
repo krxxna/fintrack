@@ -79,7 +79,7 @@ export function Analytics() {
             <div className="card-sub">Income, Expenses & Net · {now.getFullYear()}</div>
           </div>
           <div className="chart-legend">
-            <div className="legend-item"><div className="legend-dot" style={{ background: '#0EA5E9' }} />Income</div>
+            <div className="legend-item"><div className="legend-dot" style={{ background: 'var(--text1)' }} />Income</div>
             <div className="legend-item"><div className="legend-dot" style={{ background: '#EF4444' }} />Expense</div>
             <div className="legend-item"><div className="legend-dot" style={{ background: '#22C55E' }} />Net</div>
           </div>
@@ -89,7 +89,7 @@ export function Analytics() {
           {chartMode === 'area' ? (
             <AreaChart data={monthly} margin={{ top: 4, right: 4, bottom: 0, left: -18 }}>
               <defs>
-                <linearGradient id="a1" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#0EA5E9" stopOpacity={0.3}/><stop offset="95%" stopColor="#0EA5E9" stopOpacity={0}/></linearGradient>
+                <linearGradient id="a1" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="var(--text1)" stopOpacity={0.3}/><stop offset="95%" stopColor="var(--text1)" stopOpacity={0}/></linearGradient>
                 <linearGradient id="a2" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#EF4444" stopOpacity={0.2}/><stop offset="95%" stopColor="#EF4444" stopOpacity={0}/></linearGradient>
                 <linearGradient id="a3" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#22C55E" stopOpacity={0.2}/><stop offset="95%" stopColor="#22C55E" stopOpacity={0}/></linearGradient>
               </defs>
@@ -98,7 +98,7 @@ export function Analytics() {
               <YAxis tick={{ fontSize: 11, fill: 'var(--text3)' }} axisLine={false} tickLine={false}
                 tickFormatter={v => v >= 1000 ? `$${v / 1000}k` : `$${v}`} />
               <Tooltip content={<ChartTooltip />} />
-              <Area type="monotone" dataKey="income"  name="Income"  stroke="#0EA5E9" strokeWidth={2} fill="url(#a1)" dot={false} activeDot={{ r: 4 }} />
+              <Area type="monotone" dataKey="income"  name="Income"  stroke="var(--text1)" strokeWidth={2} fill="url(#a1)" dot={false} activeDot={{ r: 4 }} />
               <Area type="monotone" dataKey="expense" name="Expense" stroke="#EF4444" strokeWidth={2} fill="url(#a2)" dot={false} activeDot={{ r: 4 }} />
               <Area type="monotone" dataKey="net"     name="Net"     stroke="#22C55E" strokeWidth={1.5} strokeDasharray="5 3" fill="url(#a3)" dot={false} activeDot={{ r: 3 }} />
             </AreaChart>
@@ -109,7 +109,7 @@ export function Analytics() {
               <YAxis tick={{ fontSize: 11, fill: 'var(--text3)' }} axisLine={false} tickLine={false}
                 tickFormatter={v => v >= 1000 ? `$${v / 1000}k` : `$${v}`} />
               <Tooltip content={<ChartTooltip />} />
-              <Bar dataKey="income"  name="Income"  fill="#0EA5E9" fillOpacity={0.85} radius={[4,4,0,0]} />
+              <Bar dataKey="income"  name="Income"  fill="var(--text1)" fillOpacity={0.85} radius={[4,4,0,0]} />
               <Bar dataKey="expense" name="Expense" fill="#EF4444" fillOpacity={0.85} radius={[4,4,0,0]} />
             </BarChart>
           )}

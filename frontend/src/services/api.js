@@ -53,4 +53,10 @@ export const analyticsAPI = {
   categories: (params) => api.get('/analytics/categories', { params }),
 };
 
+// ── AI Financial Recommendations ─────────────────────────────────────────────
+export const aiAPI = {
+  getSuggestions: (transactions) => api.post('/ai/suggestions', { transactions }),
+  askChat: (prompt, summary)      => api.post('/ai/chat', { prompt, summary }),
+};
+
 export default api;

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { isMongoReady, memoryTransaction } = require('./memoryStore');
 
 const CATEGORIES = [
   'Food & Dining',
@@ -61,5 +62,18 @@ transactionSchema.index({ userId: 1, type:      1 });
 transactionSchema.index({ userId: 1, category:  1 });
 transactionSchema.index({ userId: 1, createdAt: -1 });
 
-module.exports = mongoose.model('Transaction', transactionSchema);
+const Transaction = mongoose.model('Transaction', transactionSchema);
+const transactionProxy = new Proxy(Transaction, {
+  get(target, prop) {
+    if (prop === 'CATEGORIES') return CATEGORIES;
+    if (!isMongoReady() && prop in memoryTransaction) {
+      const value = memoryTransaction[prop];
+      return typeof value === 'function' ? value.bind(memoryTransaction) : value;
+    }
+    const value = target[prop];
+    return typeof value === 'function' ? value.bind(target) : value;
+  },
+});
+
+module.exports = transactionProxy;
 module.exports.CATEGORIES = CATEGORIES;
